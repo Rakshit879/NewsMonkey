@@ -4,6 +4,7 @@ import Spinner from './Spinner';
 // import propTypes from 'prop-types';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
+
 export default class News extends Component {
 
     constructor(props) {
@@ -18,6 +19,7 @@ export default class News extends Component {
     }
 
     async update() {
+        this.props.setProgress(10);
         const url = `https://newsapi.org/v2/everything?q=${this.props.search}&from=2024-08-11&to=2024-08-11&sortBy=popularity&apiKey=53dbaa069fec4850932b6cedff57e392&page=${this.state.page}&PageSize=${this.props.PageSize}`;
         this.setState({ loading: true })
         let data = await fetch(url);
@@ -28,6 +30,7 @@ export default class News extends Component {
             totalResults: result.totalResults,
             loading: false,
         });
+        this.props.setProgress(100);
     }
 
     async componentDidMount() {
@@ -51,18 +54,20 @@ export default class News extends Component {
     //     this.update();
     // };
     fetchMoreData = async () => {
-        this.setState({
-            page: this.state.page + 1,
+        this.setState((prevState) => ({
+            page: prevState.page + 1,
+        }), async () => {
+            console.log(this.state.page); // This will now log the correct, updated page value.
+    
+            const url = `https://newsapi.org/v2/everything?q=${this.props.search}&from=2024-08-11&to=2024-08-11&sortBy=popularity&apiKey=53dbaa069fec4850932b6cedff57e392&page=${this.state.page}&pageSize=${this.props.pageSize}`;
             
-        })
-        console.log(this.state.page);
-        const url = `https://newsapi.org/v2/everything?q=${this.props.search}&from=2024-08-11&to=2024-08-11&sortBy=popularity&apiKey=53dbaa069fec4850932b6cedff57e392&page=${this.state.page}&PageSize=${this.props.PageSize}`;
-        let data = await fetch(url);
-
-        let result = await data.json();
-        this.setState({
-            articles: this.state.articles.concat(result.articles),
-            totalResults: result.totalResults
+            let data = await fetch(url);
+            let result = await data.json();
+    
+            this.setState({
+                articles: this.state.articles.concat(result.articles),
+                totalResults: result.totalResults,
+            });
         });
     };
 
