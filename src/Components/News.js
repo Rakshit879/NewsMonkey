@@ -20,7 +20,7 @@ export default class News extends Component {
 
     async update() {
         this.props.setProgress(10);
-        const url = `https://newsapi.org/v2/everything?q=${this.props.search}&from=2024-08-11&to=2024-08-11&sortBy=popularity&apiKey=53dbaa069fec4850932b6cedff57e392&page=${this.state.page}&PageSize=${this.props.PageSize}`;
+        const url = `https://newsapi.org/v2/everything?q=${this.props.search}&from=2024-08-13&to=2024-08-13&sortBy=popularity&apiKey=${this.props.apiKey}&page=${this.state.page}&PageSize=${this.props.PageSize}`;
         this.setState({ loading: true })
         let data = await fetch(url);
 
@@ -59,7 +59,7 @@ export default class News extends Component {
         }), async () => {
             console.log(this.state.page); // This will now log the correct, updated page value.
     
-            const url = `https://newsapi.org/v2/everything?q=${this.props.search}&from=2024-08-11&to=2024-08-11&sortBy=popularity&apiKey=53dbaa069fec4850932b6cedff57e392&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+            const url = `https://newsapi.org/v2/everything?q=${this.props.search}&from=2024-08-11&to=2024-08-11&sortBy=popularity&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
             
             let data = await fetch(url);
             let result = await data.json();
